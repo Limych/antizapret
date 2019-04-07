@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env perl
 
 use strict;
 use warnings FATAL => 'all';
@@ -10,8 +10,8 @@ my $buf = '';
 my $cnt = 0;
 my $mask = '';
 
-foreach $ip (@ips) {
-    if ($mask == '') {
+foreach my $ip (@ips) {
+    if ($mask eq '') {
         ($mask) = ($ip =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.)/);
         $buf = $ip;
         $cnt = 1;
