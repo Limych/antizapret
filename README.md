@@ -26,8 +26,9 @@
 
     Самое простое, зайдя в консоль (обязательно как **root**!) исполнить команды
     ```bash
-    git clone https://github.com/Limych/antizapret.git ~
-    cd ~/antizapret
+    cd ~
+    git clone https://github.com/Limych/antizapret.git
+    cd antizapret
     ```
 
 2.  Настройте регулярное обновление списков блокировки.\
