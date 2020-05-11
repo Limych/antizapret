@@ -3,8 +3,7 @@
 use strict;
 use warnings FATAL => 'all';
 
-#my @ips = `fetch -o - https://raw.githubusercontent.com/zapret-info/z-i/master/dump.csv | sed 1d | cut -d ';' -f 1 | tr "\\|" "\\n" | sed 's/^[ \\t]*//;s/[ \\t]*\$//' | sort | uniq`;
-my @ips = `fetch -o - http://api.antizapret.info/group.php | sort | uniq`;
+my @ips = `fetch -o - https://raw.githubusercontent.com/zapret-info/z-i/master/dump.csv | sed 1d | LC_CTYPE=C cut -d ';' -f 1 | tr "\\|" "\\n" | sed 's/^[ \\t]*//;s/[ \\t]*\$//' | sort | uniq`;
 
 my $buf = '';
 my $cnt = 0;
