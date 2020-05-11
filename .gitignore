@@ -11,6 +11,7 @@ ipfw_antizapret.dat
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/**/perl5local.xml
 
 # Generated files
 .idea/**/contentModel.xml
