@@ -13,12 +13,7 @@ my $mask = undef;
 
 foreach my $ip (@ips) {
     next if $ip eq "\n";
-    if (!defined $mask) {
-        ($mask) = ($ip =~ /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.)/);
-        $buf = $ip;
-        $cnt = 1;
-    }
-    elsif (starts_with($ip, $mask)) {
+    if (defined $mask && substr($ip, 0, length($mask)) eq $mask) {
         $buf .= $ip;
         $cnt++;
     }
@@ -33,10 +28,4 @@ foreach my $ip (@ips) {
         $buf = $ip;
         $cnt = 1;
     }
-}
-
-
-
-sub starts_with {
-    return substr($_[0], 0, length($_[1])) eq $_[1];
 }

@@ -44,11 +44,11 @@
     **Для других систем ...**\
     необходимо в cron добавить что-то типа
     ```
-    0   0   *   *   *   /root/antizapret/antizapret.pl >/usr/local/etc/ipfw_antizapret.dat
+    0   0   *   *   *   /root/antizapret/antizapret.pl >/usr/local/www/ipfw_antizapret.dat
     ```
     после, чтобы не ждать сутки первого обновления списка, в консоле исполняем команду
     ```
-    antizapret.pl >/usr/local/etc/ipfw_antizapret.dat
+    antizapret.pl >/usr/local/www/ipfw_antizapret.dat
     ```
    
 4.  Настройте правила файрвола.
@@ -58,7 +58,7 @@
     Name = *AntiZapret_IPs*\
     Type = *URL Table (IPs)*\
     Expiration > *Hours = 3*\
-    Content = `/usr/local/etc/ipfw_antizapret.dat`
+    Content = `/usr/local/www/ipfw_antizapret.dat`
     
     Дальше на вкладке *Firewall > NAT > Port Forward* создаём новое правило:\
     Interface = *LAN*\
@@ -66,7 +66,7 @@
     Destination = *AntiZapret_IPs*\
     Destination port range = *any*\
     Redirect target IP = *127.0.0.1* (адрес, где запущен Tor; в данном случае — та же машина)\
-    Redirect target port = *9040*\
+    Redirect target port = *9040* (порт, на котором Tor принимает запросы как прозрачный прокси)\
     Description = *Anti-Zapret*
    
     **Для других систем ...**\
@@ -75,3 +75,5 @@
 5.  Всё. :)
     
     Через некоторое время система сама подгрузит список и файрвол начнёт прозрачно перенаправлять любые обращения к заблокированным сайтам на Tor. В то же время весь прочий трафик будет идти напрямую, как обычно.
+
+При необходимости вы всегда можете получать список заблокированных адресов со своего файрволла по адресу `https://<firewall_ip>/ipfw_antizapret.dat`  

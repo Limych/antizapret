@@ -9,4 +9,4 @@ ln -Fs ${DIR}/actions_antizapret.conf /usr/local/opnsense/service/conf/actions.d
 service configd restart
 
 # Initially fetch data file
-${DIR}/../antizapret.pl >/usr/local/etc/ipfw_antizapret.dat
+${DIR}/../antizapret.pl >/usr/local/www/ipfw_antizapret.dat
