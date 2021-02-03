@@ -24,7 +24,7 @@ my $cnt = 0;
 my $mask = undef;
 
 foreach my $ip (@ips) {
-    next if $ip eq "\n";
+    next if $ip eq "\n" or $ip !~ /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}$/;
     if (defined $mask && substr($ip, 0, length($mask)) eq $mask) {
         $buf .= $ip;
         $cnt++;
