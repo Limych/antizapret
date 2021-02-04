@@ -25,7 +25,7 @@ jobs:
 
       - name: "Zip component dir"
         run: |
-          zip ${{ env.package }}.zip -r ./ -x "bin/*" -x ".github/*"
+          zip ${{ env.package }}.zip -r ./ -x "bin/*" -x ".*"
       - name: "Upload zip to release"
         uses: svenstaro/upload-release-action@v2
         with:
