@@ -1,5 +1,3 @@
-ipfw_antizapret.dat
-
 # Environments
 .env
 .venv
@@ -9,3 +7,6 @@ ENV/
 env.bak/
 venv.bak/
 .idea/
+
+ipfw_antizapret.dat
+dump.csv
