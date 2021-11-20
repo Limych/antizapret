@@ -30,8 +30,27 @@
     git clone https://github.com/Limych/antizapret.git
     cd antizapret
     ```
+   
+1.  Настройте правила файрвола.
 
-2.  Настройте регулярное обновление списков блокировки.
+    **Для OPNsense ...**\
+    сначала в настройках файрвола на вкладке *Firewall > Aliases* создайте алиас для удобства использования списка.\
+    Name = *AntiZapret_IPs*\
+    Type = *External (advanced)*\
+    
+    Дальше на вкладке *Firewall > NAT > Port Forward* создаём новое правило:\
+    Interface = *LAN*\
+    Protocol = *TCP*\
+    Destination = *AntiZapret_IPs*\
+    Destination port range = *any*\
+    Redirect target IP = *127.0.0.1* (адрес, где запущен Tor; в данном случае — та же машина)\
+    Redirect target port = *9040* (порт, на котором Tor принимает запросы как прозрачный прокси)\
+    Description = *AntiZapret*
+   
+    **Для других систем ...**\
+    к сожалению, точно описать настройку не могу. Но нужно сделать всё по-аналогии.
+
+1.  Настройте регулярное обновление списков блокировки.
 
     **Для OPNsense ...**\
     просто запустите скрипт
@@ -44,35 +63,14 @@
     **Для других систем ...**\
     необходимо в cron добавить что-то типа
     ```
-    0   0   *   *   *   /root/antizapret/antizapret.pl >/usr/local/www/ipfw_antizapret.dat
+    0   0   *   *   *   /root/antizapret/antizapret.pl | tee /usr/local/www/ipfw_antizapret.dat | xargs pfctl -t AntiZapret_IPs -T add
     ```
     после, чтобы не ждать сутки первого обновления списка, в консоле исполняем команду
     ```
-    antizapret.pl >/usr/local/www/ipfw_antizapret.dat
+    /root/antizapret/antizapret.pl | tee /usr/local/www/ipfw_antizapret.dat | xargs pfctl -t AntiZapret_IPs -T add
     ```
-   
-4.  Настройте правила файрвола.
-
-    **Для OPNsense ...**\
-    сначала в настройках файрвола на вкладке *Firewall > Aliases* создайте алиас для удобства использования списка.\
-    Name = *AntiZapret_IPs*\
-    Type = *URL Table (IPs)*\
-    Expiration > *Hours = 3*\
-    Content = `/usr/local/www/ipfw_antizapret.dat`
     
-    Дальше на вкладке *Firewall > NAT > Port Forward* создаём новое правило:\
-    Interface = *LAN*\
-    Protocol = *TCP*\
-    Destination = *AntiZapret_IPs*\
-    Destination port range = *any*\
-    Redirect target IP = *127.0.0.1* (адрес, где запущен Tor; в данном случае — та же машина)\
-    Redirect target port = *9040* (порт, на котором Tor принимает запросы как прозрачный прокси)\
-    Description = *Anti-Zapret*
-   
-    **Для других систем ...**\
-    к сожалению, точно описать настройку не могу. Но нужно сделать всё по-аналогии.
-    
-5.  Всё. :)
+1.  Всё. :)
     
     Через некоторое время система сама подгрузит список и файрвол начнёт прозрачно перенаправлять любые обращения к заблокированным сайтам на Tor. В то же время весь прочий трафик будет идти напрямую, как обычно.
 
@@ -82,4 +80,4 @@
 
 Если при создании алиаса вы получили сообщение `Invalid argument`, загляните на вкладку *Firewall> Settings> Advanced*, найдите там поле *Firewall Maximum Table Entries* и измените его значение.
 
-Известно, что на текущей версии OPNsense (v21.1) есть явный баг. При значении по-умолчанию мы имеем почему-то лимит в 32 768 адресов (хотя в справке написано, что по-умолчанию он 200 000 записей). Если явно указать там лимит в 200 000 записей, по факту он будет 131 072 записи...
+Известно, что на версии OPNsense v21.1 был явный баг: при значении по-умолчанию мы имели почему-то лимит в 32 768 адресов (хотя в справке написано, что по-умолчанию он 200 000 записей). Если явно указать там лимит в 200 000 записей, по факту он был 131 072 записи...
