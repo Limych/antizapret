@@ -50,7 +50,7 @@ if (open $whitelist, "$scriptdir/white.list") {
                 $line = `nslookup $line | grep "Address:" | grep -v "#"`;
                 chomp($line);
                 $line =~ s/Address:\s+//ig;
-                push @ips, split /\n/, $line;
+                push @ips, map { "$_\n" } split /\n/, $line;
             }
         }
     }
