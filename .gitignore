@@ -10,3 +10,4 @@ venv.bak/
 
 ipfw_antizapret.dat
 dump.csv
+test_*
